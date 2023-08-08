@@ -38,6 +38,7 @@ class CFProject {
             return $this->_data[ $name ];
         }
 
+        /* translators: %s is the name of the property */
         throw new Exception( sprintf( __( 'Property %s does not exist', 'p2cf' ), $var_name ) );
     }
 
@@ -53,12 +54,19 @@ class CFProject {
         $this->add_env_vars( array( $var ), $env );
     }
 
-    public function add_env_vars( array $vars, string $env = self::PRODUCTION_ENVIRONMENT ) {
+    public function replace_env_vars( array $vars, string $env = self::PRODUCTION_ENVIRONMENT ) {
         global $p2cf_client;
 
-        $p2cf_client->add_env_vars( $this->account_id, $this->name, $env, ...$vars );
+        $patch_vars = array_merge(
+            array_map( function ( CFProjectDeploymentConfigEnvVar $var ): CFProjectDeploymentConfigEnvVar {
+                return new CFProjectDeploymentConfigEnvVar( $var->name, new CFProjectDeploymentConfigEnvVarValue( null ) );
+            }, $this->deployment_configs[ $env ]->env_vars ),
+            $vars,
+        );
 
-        $this->deployment_configs[ $env ]->env_vars = array_merge( $this->deployment_configs[ $env ]->env_vars, $vars );
+        $p2cf_client->add_env_vars( $this->account_id, $this->name, $env, ...$patch_vars );
+
+        $this->deployment_configs[ $env ]->env_vars = $vars;
     }
 
     public function delete_env_var( string $var_name, string $env = self::PRODUCTION_ENVIRONMENT ) {
@@ -71,7 +79,7 @@ class CFProject {
         } );
     }
 
-    public function delete_all_env_var( string $prefix, string $env = self::PRODUCTION_ENVIRONMENT ) {
+    public function delete_all_env_var( string $prefix, string $env = self::PRODUCTION_ENVIRONMENT ): array {
         global $p2cf_client;
 
         $vars = $this->deployment_configs[ $env ]->env_vars;
@@ -83,7 +91,7 @@ class CFProject {
         } );
 
         if ( empty( $vars ) ) {
-            return;
+            return array();
         }
 
         $p2cf_client->delete_env_vars( $this->account_id, $this->name, $env, ...$vars );
@@ -91,5 +99,7 @@ class CFProject {
         $this->deployment_configs[ $env ]->env_vars = array_filter( $this->deployment_configs[ $env ]->env_vars, function ( CFProjectDeploymentConfigEnvVar $var ) use ( $prefix ) {
             return strpos( $var->name, $prefix ) !== 0;
         } );
+
+        return $vars;
     }
 }

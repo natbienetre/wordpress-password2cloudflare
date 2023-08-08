@@ -58,7 +58,7 @@ class CFClient {
                         array_map( function ( CFProjectDeploymentConfigEnvVar $env ): string {
                             return $env->name;
                         }, $vars ),
-                        array_map( function ( CFProjectDeploymentConfigEnvVar $env ): array {
+                        array_map( function ( CFProjectDeploymentConfigEnvVar $env ): null|array {
                             return $env->value->to_response();
                         }, $vars ),
                     ),

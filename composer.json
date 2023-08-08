@@ -1,5 +1,19 @@
 {
+    "scripts": {
+        "i18n": [
+            "wp i18n make-pot . languages/p2cf.pot --exclude=\"vendor\"",
+            "wp i18n update-po languages/p2cf.pot"
+        ],
+        "i18n-build": [
+            "wp i18n make-json languages --no-purge --update-mo-files --pretty-print"
+        ]
+    },
     "require": {
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.7"
+    },
+    "require-dev": {
+        "wp-cli/wp-cli-bundle": "*",
+        "phpunit/phpunit": "^9",
+        "yoast/phpunit-polyfills": "^2"
     }
 }

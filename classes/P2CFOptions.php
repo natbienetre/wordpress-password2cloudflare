@@ -8,6 +8,8 @@ class P2CFOptions {
     const NO_PATH_ENCODING     = 'plain';
     const PATH_ENCODING_BASE64 = 'base64';
 
+    public bool $enabled;
+
     public string $hash_algo;
     public string $env_var_prefix;
     public string $path_encoding_method;
@@ -19,6 +21,8 @@ class P2CFOptions {
     public function __construct( array $options ) {
         $options = wp_parse_args( $options, self::defaults() );
 
+        $this->enabled = $options['enabled'];
+
         $this->hash_algo            = $options['hash_algo'];
         $this->env_var_prefix       = $options['env_var_prefix'];
         $this->path_encoding_method = $options['path_encoding_method'];
@@ -28,8 +32,18 @@ class P2CFOptions {
         $this->cf_project_name = $options['cf_project_name'];
     }
 
+    public function sanitize( string $message ): string {
+        $message = str_replace( $this->cf_api_key, '*cf-api-key*', $message );
+        $message = str_replace( $this->cf_account_id, '*cf-account-id*', $message );
+        $message = str_replace( $this->cf_project_name, '*cf-project-name*', $message );
+
+        return $message;
+    }
+
     public static function defaults(): array {
         return array(
+            'enabled' => false,
+
             'hash_algo'            => self::NO_HASH_ALGO,
             'env_var_prefix'       => 'WP_PASSWORD_',
             'path_encoding_method' => self::NO_PATH_ENCODING,
@@ -41,36 +55,16 @@ class P2CFOptions {
     }
 
     public static function load(): P2CFOptions {
-        return new P2CFOptions( (array) get_option( self::OPTION_NAME, self::defaults() ) );
+        global $p2cf_opts;
+
+        if ( empty( $p2cf_opts ) ) {
+            $p2cf_opts = new self( (array) get_option( self::OPTION_NAME, self::defaults() ) );
+        }
+        
+        return $p2cf_opts;
     }
 
-    public static function sanitize( array $value ): array {
-        $sanitized = self::defaults();
-
-        if ( self::NO_HASH_ALGO == $value['hash_algo'] || in_array( $value['hash_algo'], hash_algos() ) ) {
-            $sanitized['hash_algo'] = $value['hash_algo'];
-        }
-        if ( self::NO_PATH_ENCODING == $value['path_encoding_method'] || self::PATH_ENCODING_BASE64 == $value['path_encoding_method'] ) {
-            $sanitized['path_encoding_method'] = $value['path_encoding_method'];
-        }
-        $sanitized['cf_api_key'] = $value['cf_api_key'];
-        $sanitized['cf_account_id'] = $value['cf_account_id'];
-        $sanitized['cf_project_name'] = $value['cf_project_name'];
-        $sanitized['env_var_prefix'] = $value['env_var_prefix'];
-
-        $client = new CFClient( $sanitized['cf_api_key'] );
-
-        try {
-            $project = $client->get_project( $sanitized['cf_account_id'], $sanitized['cf_project_name'] );
-            ?>
-                <div class="notice notice-success is-dismissible">
-                    <p><?php _e( 'Connected to CloudFlare!', 'p2cf' ); ?></p>
-                </div>
-            <?php
-        } catch ( CFException $e ) {
-            add_settings_error( self::OPTION_NAME, 'project', $e->getMessage() );
-        }
-
-        return $sanitized;
+    public static function add_options() {
+        add_option( self::OPTION_NAME, self::defaults() );
     }
 }
