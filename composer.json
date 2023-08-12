@@ -10,8 +10,13 @@
         "i18n-build": [
             "wp i18n make-json languages --no-purge --update-mo-files --pretty-print"
         ],
+        "version": [
+            "grep ' * Version:' p2cf.php | sed -e 's/.*: *//'"
+        ],
         "ci-test": [
-            "phpunit --no-interaction --log-junit test-result.xml"
+            "wp scaffold plugin-tests p2cf --dir=$(pwd) --force",
+            "./bin/install-wp-tests.sh wordpress root root localhost latest true",
+            "phpunit --no-interaction --log-junit junit-result.xml"
         ],
         "test": [
             "phpunit"
