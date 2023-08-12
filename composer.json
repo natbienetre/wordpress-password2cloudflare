@@ -1,4 +1,7 @@
 {
+    "name": "natbienetre/wordpress-p2cf",
+    "description": "Password 2 Cloudflare is a Wordpress plugin that allows you to synchronize your Wordpress passwords with Cloudflare Pages environment variables.",
+    "license": "MPL-2.0",
     "scripts": {
         "i18n": [
             "wp i18n make-pot . languages/p2cf.pot --exclude=\"vendor\"",
