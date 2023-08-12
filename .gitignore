@@ -6,3 +6,4 @@ languages/*.json
 bin
 *.bak
 .phpunit.result.cache
+test-result.xml

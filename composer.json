@@ -9,6 +9,12 @@
         ],
         "i18n-build": [
             "wp i18n make-json languages --no-purge --update-mo-files --pretty-print"
+        ],
+        "ci-test": [
+            "phpunit --no-interaction --log-junit test-result.xml"
+        ],
+        "test": [
+            "phpunit"
         ]
     },
     "require": {
