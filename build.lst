@@ -1,0 +1,6 @@
+classes/
+css/
+js/
+languages/*.json
+languages/*.mo
+vendor/

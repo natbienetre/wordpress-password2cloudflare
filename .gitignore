@@ -7,3 +7,6 @@ bin
 *.bak
 .phpunit.result.cache
 junit-result.xml
+
+build
+p2cf.zip
