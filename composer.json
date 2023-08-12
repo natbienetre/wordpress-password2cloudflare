@@ -16,7 +16,7 @@
         "ci-test": [
             "wp scaffold plugin-tests p2cf --dir=$(pwd) --force",
             "./bin/install-wp-tests.sh wordpress root root localhost latest true",
-            "phpunit --no-interaction --log-junit test-result.xml"
+            "phpunit --no-interaction --log-junit junit-result.xml"
         ],
         "test": [
             "phpunit"
