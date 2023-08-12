@@ -18,6 +18,15 @@
             "./bin/install-wp-tests.sh wordpress root root localhost latest true",
             "phpunit --no-interaction --log-junit junit-result.xml"
         ],
+        "build": [
+            "composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress --no-suggest",
+            "composer dump-autoload --no-dev --optimize --classmap-authoritative",
+            "tar -cvf p2cf.tar *.php classes/ vendor/ css/ js/",
+            "composer install --dev --prefer-dist --no-interaction --no-progress --no-suggest",
+            "composer run-script i18n-build",
+            "tar -rvf p2cf.tar languages/*.mo languages/*.json",
+            "gzip -vf9 p2cf.tar"
+        ],
         "test": [
             "phpunit"
         ]

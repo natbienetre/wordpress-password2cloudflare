@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Build release
+      run: composer run-script build
+
+    - name: Version
+      id: version
+      run: |-
+        echo P2CF_VERSION="$(composer run-script version)" >> "$GITHUB_OUTPUT"
+        git log $(git describe --tags --abbrev=0)..HEAD --oneline > changes.txt
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "p2cf.tar.gz"
+        bodyFile: changes.txt
+        tag: "v${{ steps.version.outputs.P2CF_VERSION }}"
+        artifactErrorsFailBuild: true
+        draft: true
