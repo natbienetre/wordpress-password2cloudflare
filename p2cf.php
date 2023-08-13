@@ -4,6 +4,7 @@
  * Plugin URI:        https://github.com/natbienetre/wordpress-password2cloudflare
  * Version:           0.1.0
  * GitHub Plugin URI: natbienetre/wordpress-password2cloudflare
+ * Funding URI:       https://github.com/sponsors/holyhope
  * Description:       Synchronize WordPress password-protected posts with secret environment variables in Cloudflare Pages.
  * Author:            @holyhope
  * Author URI:        https://github.com/holyhope
@@ -174,4 +175,22 @@ function p2cf_get_env_var( WP_Post $post, P2CFOptions $opts ): ?CFProjectDeploym
     }
 
     return new CFProjectDeploymentConfigEnvVar( $var_name, new CFProjectDeploymentConfigEnvVarValue( $value, true ) );
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( P2CF_PLUGIN_FILE ), 'p2cf_plugin_action_links', 10, 4 );
+function p2cf_plugin_action_links( array $links ): array {
+    $plugin_data = get_plugin_data( P2CF_PLUGIN_FILE );
+
+    $links[] = '<a target="_blank" href="' . esc_attr( $plugin_data['Funding URI'] ) . '">' . _x( '❤️ Show support', 'In plugin list, link to sponsor the developper', 'p2cf' ) . '</a>';
+
+    return $links;
+}
+
+add_filter( 'extra_plugin_headers', 'p2cf_extra_funding_uri' );
+function p2cf_extra_funding_uri( array $headers ): array {
+    if ( ! in_array( 'Funding URI', $headers ) ) {
+        $headers[] = 'Funding URI';
+    }
+
+    return $headers;
 }
