@@ -1,5 +1,6 @@
 vendor
 languages/*.json
+languages/*.mo
 
 .phpunit.cache
 .travis.yml
