@@ -181,6 +181,10 @@ add_filter( 'plugin_action_links_' . plugin_basename( P2CF_PLUGIN_FILE ), 'p2cf_
 function p2cf_plugin_action_links( array $links ): array {
     $plugin_data = get_plugin_data( P2CF_PLUGIN_FILE );
 
+	if ( ! isset( $plugin_data['Funding URI'] ) ) {
+		return $links;
+	}
+
     $links[] = '<a target="_blank" href="' . esc_attr( $plugin_data['Funding URI'] ) . '">' . _x( '❤️ Show support', 'In plugin list, link to sponsor the developper', 'p2cf' ) . '</a>';
 
     return $links;
