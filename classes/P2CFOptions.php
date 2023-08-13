@@ -45,7 +45,7 @@ class P2CFOptions {
             'enabled' => false,
 
             'hash_algo'            => self::NO_HASH_ALGO,
-            'env_var_prefix'       => 'WP_PASSWORD_',
+            'env_var_prefix'       => _x( 'WP_PASSWORD_', 'Default prefix for environment variable', 'p2cf' ),
             'path_encoding_method' => self::NO_PATH_ENCODING,
             
             'cf_api_key'      => '',
