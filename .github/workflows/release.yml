@@ -34,8 +34,12 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
+        artifactContentType: "application/zip"
+        artifactErrorsFailBuild: true
         artifacts: "p2cf.zip"
         bodyFile: changes.txt
-        tag: "v${{ steps.version.outputs.P2CF_VERSION }}"
-        artifactErrorsFailBuild: true
         draft: true
+        omitDraftDuringUpdate: true
+        removeArtifacts: true
+        tag: "v${{ steps.version.outputs.P2CF_VERSION }}"
+        updateOnlyUnreleased: true
