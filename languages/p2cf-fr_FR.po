@@ -215,17 +215,17 @@ msgid "See how to create a Cloudflare API token."
 msgstr "Voir comment créer un jeton d'API Cloudflare."
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:72
+#: p2cf.php:74
 msgid "Error while adding environment variable %1$s to Cloudflare project %2$s."
 msgstr "Erreur lors de l'ajout de la variable d'environnement %1$s au projet Cloudflare %2$s."
 
 #. translators: %1$s is the prefix for environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:92
+#: p2cf.php:94
 msgid "Error while deleting all environment variables (starting with %1$s) from Cloudflare project %2$s"
 msgstr "Erreur lors de la suppression de toutes les variables d'environnement (commençant par %1$s) du projet Cloudflare %2$s"
 
 #. translators: %s is the project name
-#: p2cf.php:108
+#: p2cf.php:110
 msgid "Failed to synchronize environment variables with the project %s."
 msgstr "Échec de la synchronisation des variables d'environnement avec le projet %s."
 
@@ -278,7 +278,7 @@ msgid "Security check failed. Please retry."
 msgstr "La vérification de sécurité à échouée. Veuillez réessayer."
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:62
+#: p2cf.php:64
 msgid "Error while deleting environment varariable %1$s from Cloudflare project %2$s."
 msgstr "Erreur lors de la suppression de la variable d'environnement %1$s du projet Cloudflare %2$s."
 
@@ -286,3 +286,12 @@ msgstr "Erreur lors de la suppression de la variable d'environnement %1$s du pro
 msgctxt "The text on the button that ensure settings are valid"
 msgid "Check the settings"
 msgstr "Vérifier les paramètres"
+
+#: classes/P2CFAdminPage.php:52
+msgid "Settings"
+msgstr "Options"
+
+#: p2cf.php:184
+msgctxt "In plugin list, link to sponsor the developper"
+msgid "❤️ Show support"
+msgstr "❤️ Soutenir"

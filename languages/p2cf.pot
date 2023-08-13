@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Password 2 Cloudflare plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Password 2 Cloudflare\n"
+"Project-Id-Version: Password 2 Cloudflare 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-secret-2-cloudflare\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-12T09:18:33+00:00\n"
+"POT-Creation-Date: 2023-08-13T11:01:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: p2cf\n"
 
 #. Plugin Name of the plugin
@@ -63,6 +63,10 @@ msgstr ""
 #. translators: %s is the name of the property
 #: classes/CFProject.php:42
 msgid "Property %s does not exist"
+msgstr ""
+
+#: classes/P2CFAdminPage.php:52
+msgid "Settings"
 msgstr ""
 
 #: classes/P2CFAdminPage.php:82
@@ -264,23 +268,28 @@ msgid "Cloudflare Pages Edit"
 msgstr ""
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:62
+#: p2cf.php:64
 msgid "Error while deleting environment varariable %1$s from Cloudflare project %2$s."
 msgstr ""
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:72
+#: p2cf.php:74
 msgid "Error while adding environment variable %1$s to Cloudflare project %2$s."
 msgstr ""
 
 #. translators: %1$s is the prefix for environment variable, %2$s is the name of the Cloudflare project
-#: p2cf.php:92
+#: p2cf.php:94
 msgid "Error while deleting all environment variables (starting with %1$s) from Cloudflare project %2$s"
 msgstr ""
 
 #. translators: %s is the project name
-#: p2cf.php:108
+#: p2cf.php:110
 msgid "Failed to synchronize environment variables with the project %s."
+msgstr ""
+
+#: p2cf.php:184
+msgctxt "In plugin list, link to sponsor the developper"
+msgid "❤️ Show support"
 msgstr ""
 
 #: js/admin-settings.js:38

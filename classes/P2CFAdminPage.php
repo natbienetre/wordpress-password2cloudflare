@@ -45,12 +45,13 @@ class P2CFAdminPage {
 
         add_action( 'admin_enqueue_scripts', array( $instance, 'enqueue_admin_script' ) );
 
-        add_filter( 'plugin_action_links_' . plugin_basename( P2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ), 10, 4 );
+        add_filter( 'plugin_action_links_' . plugin_basename( P2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ) );
     }
 
     function plugin_settings( array $links ): array {
-		array_unshift( $links, '<a href="' . esc_url( $this->get_url() ) . '&amp;sub=options">' . __( 'Settings', 'redirection' ) . '</a>' );
-		return $links;
+        array_unshift( $links, '<a href="' . esc_url( $this->get_url() ) . '&amp;sub=options">' . __( 'Settings', 'p2cf' ) . '</a>' );
+
+        return $links;
 	}
 
     public function get_url( array $params = array() ): string {
