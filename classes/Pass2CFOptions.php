@@ -1,7 +1,7 @@
 <?php
 
-class P2CFOptions {
-    const OPTION_NAME = 'p2cf_options';
+class Pass2CFOptions {
+    const OPTION_NAME = 'pass2cf_options';
     
     const NO_HASH_ALGO = 'none';
 
@@ -45,7 +45,7 @@ class P2CFOptions {
             'enabled' => false,
 
             'hash_algo'            => self::NO_HASH_ALGO,
-            'env_var_prefix'       => _x( 'WP_PASSWORD_', 'Default prefix for environment variable', 'p2cf' ),
+            'env_var_prefix'       => _x( 'WP_PASSWORD_', 'Default prefix for environment variable', 'pass2cf' ),
             'path_encoding_method' => self::NO_PATH_ENCODING,
             
             'cf_api_key'      => '',
@@ -54,14 +54,14 @@ class P2CFOptions {
         );
     }
 
-    public static function load(): P2CFOptions {
-        global $p2cf_opts;
+    public static function load(): Pass2CFOptions {
+        global $pass2cf_opts;
 
-        if ( empty( $p2cf_opts ) ) {
-            $p2cf_opts = new self( (array) get_option( self::OPTION_NAME, self::defaults() ) );
+        if ( empty( $pass2cf_opts ) ) {
+            $pass2cf_opts = new self( (array) get_option( self::OPTION_NAME, self::defaults() ) );
         }
         
-        return $p2cf_opts;
+        return $pass2cf_opts;
     }
 
     public static function add_options() {

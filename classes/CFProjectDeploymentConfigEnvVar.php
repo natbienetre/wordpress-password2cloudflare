@@ -11,7 +11,7 @@ class CFProjectDeploymentConfigEnvVar {
     public static function from_response( array $response ): array {
         $envs = array();
 
-        $opts = P2CFOptions::load();
+        $opts = Pass2CFOptions::load();
 
         foreach ( $response as $name => $value ) {
             if ( ! str_starts_with( $name, $opts->env_var_prefix ) ) {

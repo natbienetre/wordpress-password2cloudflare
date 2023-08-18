@@ -1,17 +1,17 @@
 <?php
-class P2CFAdminPage {
-    const OPTIONS_PAGE_ID         = 'p2cf-options';
-    const SYNC_VARS_PAGE_ID       = 'p2cf-sync-env-vars';
-    const DELETE_ENV_VARS_PAGE_ID = 'p2cf-delete-env-vars';
+class Pass2CFAdminPage {
+    const OPTIONS_PAGE_ID         = 'pass2cf-options';
+    const SYNC_VARS_PAGE_ID       = 'pass2cf-sync-env-vars';
+    const DELETE_ENV_VARS_PAGE_ID = 'pass2cf-delete-env-vars';
 
     const GENERAL_SECTION         = 'general';
     const SYNC_VARS_SECTION       = 'sync_vars';
     const CLOUDFLARE_SECTION      = 'cloudflare';
     const DELETE_ENV_VARS_SECTION = 'delete_env_vars';
     
-    const SYNC_VARS_ACTION     = 'p2cf-sync-env-vars';
-    const DELETE_VARS_ACTION   = 'p2cf-delete-env-vars';
-    const CHECK_OPTIONS_ACTION = 'p2cf-options-check';
+    const SYNC_VARS_ACTION     = 'pass2cf-sync-env-vars';
+    const DELETE_VARS_ACTION   = 'pass2cf-delete-env-vars';
+    const CHECK_OPTIONS_ACTION = 'pass2cf-options-check';
 
     const DELETE_VARS_PREFIX_INPUT = 'old_prefix';
 
@@ -45,11 +45,11 @@ class P2CFAdminPage {
 
         add_action( 'admin_enqueue_scripts', array( $instance, 'enqueue_admin_script' ) );
 
-        add_filter( 'plugin_action_links_' . plugin_basename( P2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ) );
+        add_filter( 'plugin_action_links_' . plugin_basename( Pass2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ) );
     }
 
     function plugin_settings( array $links ): array {
-        array_unshift( $links, '<a href="' . esc_url( $this->get_url() ) . '&amp;sub=options">' . __( 'Settings', 'p2cf' ) . '</a>' );
+        array_unshift( $links, '<a href="' . esc_url( $this->get_url() ) . '&amp;sub=options">' . __( 'Settings', 'pass2cf' ) . '</a>' );
 
         return $links;
 	}
@@ -65,66 +65,66 @@ class P2CFAdminPage {
             return;
         }
 
-        wp_enqueue_script( 'p2cf-admin-settings', plugin_dir_url( P2CF_PLUGIN_FILE ) . '/js/admin-settings.js', array(
+        wp_enqueue_script( 'pass2cf-admin-settings', plugin_dir_url( Pass2CF_PLUGIN_FILE ) . '/js/admin-settings.js', array(
             'jquery',
             'jquery-ui-tooltip',
             'wp-i18n',
         ), '1.0' );
 
-        wp_enqueue_style( 'p2cf-admin-settings', plugin_dir_url( P2CF_PLUGIN_FILE ) . '/css/admin-settings.css' );
+        wp_enqueue_style( 'pass2cf-admin-settings', plugin_dir_url( Pass2CF_PLUGIN_FILE ) . '/css/admin-settings.css' );
 
-        wp_set_script_translations( 'p2cf-admin-settings', 'p2cf', plugin_dir_path( P2CF_PLUGIN_FILE ) . 'languages/' );
+        wp_set_script_translations( 'pass2cf-admin-settings', 'pass2cf', plugin_dir_path( Pass2CF_PLUGIN_FILE ) . 'languages/' );
     }
 
     function load_page() {
         $status = sanitize_text_field( $_GET[ self::STATUS_PARAM_NAME ] ?? '' );
         switch ( $status ) {
             case self::NONCE_FAILED_STATUS:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'Security check failed. Please retry.', 'p2cf' ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'Security check failed. Please retry.', 'pass2cf' ), 'error' );
                 break;
             case self::UNAUTHORIZED_STATUS:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'You are not authorized to perform this action.', 'p2cf' ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'You are not authorized to perform this action.', 'pass2cf' ), 'error' );
                 break;
             case self::TRUNCATED_STATUS:
                 $nb = sanitize_text_field( $_GET[ self::MESSAGE_PARAM_NAME ] ?? 0 );
                 if ( ! $nb ) {
-                    add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'No environment variable to delete.', 'p2cf' ), 'updated' );
+                    add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'No environment variable to delete.', 'pass2cf' ), 'updated' );
                     break;
                 }
                 /* translators: %d is the number of environment variables that were deleted */
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, sprintf( _n( '%d environment variable deleted.', '%d environment variables deleted.', $nb, 'p2cf' ), $nb ), 'updated' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, sprintf( _n( '%d environment variable deleted.', '%d environment variables deleted.', $nb, 'pass2cf' ), $nb ), 'updated' );
                 break;
             case self::SYNCHRONIZED_STATUS:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'Environment variables synchronized.', 'p2cf' ), 'updated' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'Environment variables synchronized.', 'pass2cf' ), 'updated' );
                 break;
             case self::SYNCHRONIZATION_FAILED_STATUS:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'Environment variables synchronization failed.', 'p2cf' ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'Environment variables synchronization failed.', 'pass2cf' ), 'error' );
                 break;
             case self::INVALID_PREFIX_STATUS:
                 $prefix = sanitize_text_field( $_GET[ self::MESSAGE_PARAM_NAME ] ?? '' );
                 /* translators: %s is the prefix of the environment variable  that was invalid */
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, sprintf( __( 'Invalid prefix %s.', 'p2cf' ), $prefix ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, sprintf( __( 'Invalid prefix %s.', 'pass2cf' ), $prefix ), 'error' );
                 break;
             case self::CHECK_FAILED_STATUS:
                 $message = sanitize_text_field( $_GET[ self::MESSAGE_PARAM_NAME ] ?? 'Unknown error.' );
                 /* translators: %s is the message of the root error */
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, sprintf( __( 'Error while checking settings: %s', 'p2cf' ), $message ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, sprintf( __( 'Error while checking settings: %s', 'pass2cf' ), $message ), 'error' );
                 break;
             case self::CHECK_SUCCEEDED_STATUS:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'Settings are valid.', 'p2cf' ), 'updated' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'Settings are valid.', 'pass2cf' ), 'updated' );
                 break;
             case '':
                 break;
             default:
-                add_settings_error( P2CFOptions::OPTION_NAME, $status, __( 'Unknown status.', 'p2cf' ), 'error' );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $status, __( 'Unknown status.', 'pass2cf' ), 'error' );
                 break;
         }
     }
     
     function add_admin_menu() {
         $this->load_hook_suffix = add_options_page(
-            __( 'Password 2 Cloudflare', 'p2cf' ),
-            __( 'Password 2 Cloudflare', 'p2cf' ),
+            __( 'Password 2 Cloudflare', 'pass2cf' ),
+            __( 'Password 2 Cloudflare', 'pass2cf' ),
             'manage_options',
             'password-sync-to-cloudflare',
             array( $this, 'options_page' ),
@@ -168,7 +168,7 @@ class P2CFAdminPage {
             ) ) );
             exit;
         } catch ( CFException $e ) {
-            $e->raise( __( 'Error while deleting environment variables', 'p2cf' ) );
+            $e->raise( __( 'Error while deleting environment variables', 'pass2cf' ) );
             return;
         }
     }
@@ -191,14 +191,14 @@ class P2CFAdminPage {
         }
 
         try {
-            $nb = p2cf_sync_all();
+            $nb = pass2cf_sync_all();
             wp_redirect( $this->get_url( array(
                 self::STATUS_PARAM_NAME  => self::SYNCHRONIZED_STATUS,
                 self::MESSAGE_PARAM_NAME => $nb,
             ) ) );
             exit;
         } catch ( CFException $e ) {
-            $e->raise( __( 'Error while synchronizing environment variables', 'p2cf' ) );
+            $e->raise( __( 'Error while synchronizing environment variables', 'pass2cf' ) );
             return;
         }
     }
@@ -206,7 +206,7 @@ class P2CFAdminPage {
     public function check_options() {
         $nonce = sanitize_text_field( @$_POST['_wpnonce'] );
 
-        if( ! wp_verify_nonce( $nonce, P2CFOptions::OPTION_NAME . '-options' ) ){
+        if( ! wp_verify_nonce( $nonce, Pass2CFOptions::OPTION_NAME . '-options' ) ){
             wp_send_json_error( array(
                 self::STATUS_PARAM_NAME => self::NONCE_FAILED_STATUS,
             ) );
@@ -220,7 +220,7 @@ class P2CFAdminPage {
             return;
         }
 
-        $opts = new P2CFOptions( $_POST[ P2CFOptions::OPTION_NAME ] );
+        $opts = new Pass2CFOptions( $_POST[ Pass2CFOptions::OPTION_NAME ] );
         $client = new CFClient( $opts->cf_api_key );
 
         try {
@@ -239,11 +239,11 @@ class P2CFAdminPage {
     }
 
     function options_page() {
-        $opts = P2CFOptions::load();
+        $opts = Pass2CFOptions::load();
         ?>
-            <h1><? esc_html_e( 'Password 2 Cloudflare', 'p2cf' ); ?></h1>
+            <h1><? esc_html_e( 'Password 2 Cloudflare', 'pass2cf' ); ?></h1>
 
-            <div class="wrap" id="p2cf-content">
+            <div class="wrap" id="pass2cf-content">
                 <form action="options.php" method="post" data-ajax-url="<?php echo esc_attr( admin_url( 'admin-ajax.php' ) ); ?>">
                     <?php
                         // This remove custom query parameters from the URL
@@ -251,7 +251,7 @@ class P2CFAdminPage {
                         $request_URI = @$_SERVER['REQUEST_URI'];
                         try {
                             $_SERVER['REQUEST_URI'] = remove_query_arg( array( self::STATUS_PARAM_NAME, self::MESSAGE_PARAM_NAME ), $request_URI );
-                            settings_fields( P2CFOptions::OPTION_NAME );
+                            settings_fields( Pass2CFOptions::OPTION_NAME );
                         } finally {
                             $_SERVER['REQUEST_URI'] = $request_URI;
                         }
@@ -266,7 +266,7 @@ class P2CFAdminPage {
                     <?php do_settings_sections( self::SYNC_VARS_PAGE_ID ); ?>
                     <?php
                         /* translators: %s is the name of the Cloudflare project */
-                        submit_button( sprintf( __( 'Synchronize with Cloudflare project %s', 'p2cf' ), $opts->cf_project_name ), 'secondary', self::SYNC_VARS_ACTION );
+                        submit_button( sprintf( __( 'Synchronize with Cloudflare project %s', 'pass2cf' ), $opts->cf_project_name ), 'secondary', self::SYNC_VARS_ACTION );
                     ?>
                 </form>
                 <form action="/wp-admin/admin-post.php" method="post">
@@ -275,7 +275,7 @@ class P2CFAdminPage {
                     <?php do_settings_sections( self::DELETE_ENV_VARS_PAGE_ID ); ?>
                     <?php
                         /* translators: %s is the name of the Cloudflare project */
-                        submit_button( sprintf( __( 'Delete environment variables from Cloudflare project %s', 'p2cf' ), $opts->cf_project_name ), 'delete', self::DELETE_VARS_ACTION );
+                        submit_button( sprintf( __( 'Delete environment variables from Cloudflare project %s', 'pass2cf' ), $opts->cf_project_name ), 'delete', self::DELETE_VARS_ACTION );
                     ?>
                 </form>
             </div>
@@ -283,19 +283,19 @@ class P2CFAdminPage {
     }
 
     public function sanitize_setting( array $value ): array {
-        $sanitized = (array) P2CFOptions::load();
+        $sanitized = (array) Pass2CFOptions::load();
 
-        if ( P2CFOptions::NO_HASH_ALGO == $value['hash_algo'] ) {
-            $sanitized['hash_algo'] = P2CFOptions::NO_HASH_ALGO;
+        if ( Pass2CFOptions::NO_HASH_ALGO == $value['hash_algo'] ) {
+            $sanitized['hash_algo'] = Pass2CFOptions::NO_HASH_ALGO;
         } elseif ( ! in_array( $value['hash_algo'], hash_algos() ) ) {
-            add_settings_error( P2CFOptions::OPTION_NAME, 'invalid_hash_algo', __( 'Invalid hash algorithm', 'p2cf' ) );
+            add_settings_error( Pass2CFOptions::OPTION_NAME, 'invalid_hash_algo', __( 'Invalid hash algorithm', 'pass2cf' ) );
         } else {
             $sanitized['hash_algo'] = $value['hash_algo'];
         }
-        if ( in_array( $value['path_encoding_method'], array( P2CFOptions::NO_PATH_ENCODING, P2CFOptions::PATH_ENCODING_BASE64 ) ) ) {
+        if ( in_array( $value['path_encoding_method'], array( Pass2CFOptions::NO_PATH_ENCODING, Pass2CFOptions::PATH_ENCODING_BASE64 ) ) ) {
             $sanitized['path_encoding_method'] = $value['path_encoding_method'];
         } else {
-            add_settings_error( P2CFOptions::OPTION_NAME, 'invalid_path_encoding_method', __( 'Invalid path encoding method', 'p2cf' ) );
+            add_settings_error( Pass2CFOptions::OPTION_NAME, 'invalid_path_encoding_method', __( 'Invalid path encoding method', 'pass2cf' ) );
         }
 
         $sanitized['enabled'] = isset( $value['enabled'] ) && $value['enabled'] == 'on';
@@ -309,7 +309,7 @@ class P2CFAdminPage {
         try {
             $project = $client->get_project( $sanitized['cf_account_id'], $sanitized['cf_project_name'] );
             /* translators: %s is the name of the Cloudflare project */
-            add_settings_error( P2CFOptions::OPTION_NAME, 'clouflare-success', sprintf( __( 'Successfully connected to Cloudflare project %s', 'p2cf' ), '<code>' . $project->name . '</code>' ), 'updated' );
+            add_settings_error( Pass2CFOptions::OPTION_NAME, 'clouflare-success', sprintf( __( 'Successfully connected to Cloudflare project %s', 'pass2cf' ), '<code>' . $project->name . '</code>' ), 'updated' );
         } catch ( CFException $e ) {
             $e->handle();
         }
@@ -320,7 +320,7 @@ class P2CFAdminPage {
     function sync_vars_init() {
         add_settings_section(
             self::SYNC_VARS_SECTION,
-            '<span class="dashicons dashicons-update"></span> ' . esc_html_x( 'Synchronization', 'Header for the setting section', 'p2cf' ),
+            '<span class="dashicons dashicons-update"></span> ' . esc_html_x( 'Synchronization', 'Header for the setting section', 'pass2cf' ),
             array( $this, 'sync_vars_section_callback' ),
             self::SYNC_VARS_PAGE_ID,
         );
@@ -329,14 +329,14 @@ class P2CFAdminPage {
     function delete_env_vars_init() {
         add_settings_section(
             self::DELETE_ENV_VARS_SECTION,
-            '<span class="dashicons dashicons-warning"></span> ' . esc_html_x( 'Dangerous zone', 'Header for the setting section', 'p2cf' ),
+            '<span class="dashicons dashicons-warning"></span> ' . esc_html_x( 'Dangerous zone', 'Header for the setting section', 'pass2cf' ),
             array( $this, 'delete_env_vars_section_callback' ),
             self::DELETE_ENV_VARS_PAGE_ID,
         );
 
         add_settings_field(
             'delete_env_var_prefix',
-            $this->label_for( 'p2cf-delete-env-var-prefix', esc_html_x( 'Environment Variable Prefix', 'Label for the setting field', 'p2cf' ) ),
+            $this->label_for( 'pass2cf-delete-env-var-prefix', esc_html_x( 'Environment Variable Prefix', 'Label for the setting field', 'pass2cf' ) ),
             array( $this, 'delete_env_var_prefix_render' ),
             self::DELETE_ENV_VARS_PAGE_ID,
             self::DELETE_ENV_VARS_SECTION,
@@ -348,22 +348,22 @@ class P2CFAdminPage {
     }
 
     function settings_init() {
-        register_setting( P2CFOptions::OPTION_NAME, P2CFOptions::OPTION_NAME, array(
+        register_setting( Pass2CFOptions::OPTION_NAME, Pass2CFOptions::OPTION_NAME, array(
             'type'              => 'array',
-            'default'           => P2CFOptions::defaults(),
+            'default'           => Pass2CFOptions::defaults(),
             'sanitize_callback' => array( $this, 'sanitize_setting' ),
         ) );
         
         add_settings_section(
             self::GENERAL_SECTION,
-            esc_html_x( 'General', 'Header for the setting section', 'p2cf' ),
+            esc_html_x( 'General', 'Header for the setting section', 'pass2cf' ),
             array( $this, 'synchronization_section_callback' ),
             self::OPTIONS_PAGE_ID,
         );
 
         add_settings_field(
             'enabled',
-            $this->label_for( 'p2cf-enabled', esc_html_x( 'Check to enable the plugin', 'Label for the setting field', 'p2cf' ) ),
+            $this->label_for( 'pass2cf-enabled', esc_html_x( 'Check to enable the plugin', 'Label for the setting field', 'pass2cf' ) ),
             array( $this, 'enabled_render' ),
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
@@ -371,7 +371,7 @@ class P2CFAdminPage {
 
         add_settings_field(
             'env_var_prefix',
-            $this->label_for( 'p2cf-env-var-prefix', esc_html_x( 'Environment Variable Prefix', 'Label for the setting field', 'p2cf' ) ),
+            $this->label_for( 'pass2cf-env-var-prefix', esc_html_x( 'Environment Variable Prefix', 'Label for the setting field', 'pass2cf' ) ),
             array( $this, 'env_var_prefix_render' ),
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
@@ -379,7 +379,7 @@ class P2CFAdminPage {
         
         add_settings_field(
             'path_encoding_method',
-            $this->label_for( 'p2cf-path-encoding-method', esc_html_x( 'Path encoding method', 'Label for the setting field', 'p2cf' ) ),
+            $this->label_for( 'pass2cf-path-encoding-method', esc_html_x( 'Path encoding method', 'Label for the setting field', 'pass2cf' ) ),
             array( $this, 'path_encoding_method_render' ),
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
@@ -387,7 +387,7 @@ class P2CFAdminPage {
         
         add_settings_field(
             'hash_algo',
-            $this->label_for( 'p2cf-hash-algo', esc_html_x( 'Hash algorithm', 'Label for the setting field', 'p2cf' ) ),
+            $this->label_for( 'pass2cf-hash-algo', esc_html_x( 'Hash algorithm', 'Label for the setting field', 'pass2cf' ) ),
             array( $this, 'hash_algo_render' ),
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
@@ -395,14 +395,14 @@ class P2CFAdminPage {
         
         add_settings_section(
             self::CLOUDFLARE_SECTION,
-            esc_html_x( 'Cloudflare', 'Header for the setting section', 'p2cf' ),
+            esc_html_x( 'Cloudflare', 'Header for the setting section', 'pass2cf' ),
             array( $this, 'cloudflare_section_callback' ),
             self::OPTIONS_PAGE_ID,
         );
         
         add_settings_field(
             'cf_api_key',
-            $this->label_for( 'p2cf-cf-api-key', esc_html_x( 'Cloudflare API Key', 'Label for the setting field', 'p2cf' ) . wp_required_field_indicator() ),
+            $this->label_for( 'pass2cf-cf-api-key', esc_html_x( 'Cloudflare API Key', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
             array( $this, 'cf_api_key_render' ),
             self::OPTIONS_PAGE_ID,
             self::CLOUDFLARE_SECTION,
@@ -410,7 +410,7 @@ class P2CFAdminPage {
         
         add_settings_field(
             'cf_account_id',
-            $this->label_for( 'p2cf-cf-account-id', esc_html_x( 'Account ID', 'Label for the setting field', 'p2cf' ) . wp_required_field_indicator() ),
+            $this->label_for( 'pass2cf-cf-account-id', esc_html_x( 'Account ID', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
             array( $this, 'account_id_render' ),
             self::OPTIONS_PAGE_ID,
             self::CLOUDFLARE_SECTION,
@@ -418,7 +418,7 @@ class P2CFAdminPage {
         
         add_settings_field(
             'cf_project_name',
-            $this->label_for( 'p2cf-cf-project-name', esc_html_x( 'Pages project name', 'Label for the setting field', 'p2cf' ) . wp_required_field_indicator() ),
+            $this->label_for( 'pass2cf-cf-project-name', esc_html_x( 'Pages project name', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
             array( $this, 'project_name_render' ),
             self::OPTIONS_PAGE_ID,
             self::CLOUDFLARE_SECTION,
@@ -427,12 +427,12 @@ class P2CFAdminPage {
 
     function sync_vars_section_callback() {
         ?>
-            <p><?php esc_html_e( 'These buttons allow you to reconcile the passwords stored in the database with the environment variables stored in Cloudflare.', 'p2cf' ); ?></p>
+            <p><?php esc_html_e( 'These buttons allow you to reconcile the passwords stored in the database with the environment variables stored in Cloudflare.', 'pass2cf' ); ?></p>
             <div class="notice notice-warning inline">
                 <p><?php printf(
                     /* translators: %s is the prefix for environment variable */
-                    esc_html__( 'Warning, this will remove all environment variables starting with %s that does not match a protected page.', 'p2cf' ),
-                    '<code>' . P2CFOptions::load()->env_var_prefix . '</code>'
+                    esc_html__( 'Warning, this will remove all environment variables starting with %s that does not match a protected page.', 'pass2cf' ),
+                    '<code>' . Pass2CFOptions::load()->env_var_prefix . '</code>'
                 ); ?></p>
             </div>
         <?php
@@ -440,39 +440,39 @@ class P2CFAdminPage {
     
     function delete_env_vars_section_callback() {
         ?>
-            <p><?php esc_html_e( 'These buttons allow you to delete all environment variables from Cloudflare.', 'p2cf' ); ?> </p>
+            <p><?php esc_html_e( 'These buttons allow you to delete all environment variables from Cloudflare.', 'pass2cf' ); ?> </p>
         <?php
     }
     
     function delete_env_var_prefix_render() {
         ?>
-        <input type="text" id="p2cf-delete-env-var-prefix" class="code" required minlength="1" name="<?php echo esc_attr( self::DELETE_VARS_PREFIX_INPUT ); ?>" placeholder="<?php echo esc_attr_x( 'OLD_PREFIX_', 'The default prefix for environment variable', 'p2cf' ); ?>">
+        <input type="text" id="pass2cf-delete-env-var-prefix" class="code" required minlength="1" name="<?php echo esc_attr( self::DELETE_VARS_PREFIX_INPUT ); ?>" placeholder="<?php echo esc_attr_x( 'OLD_PREFIX_', 'The default prefix for environment variable', 'pass2cf' ); ?>">
         <?php
     }
     
     function synchronization_section_callback() {
         ?>
-            <p><?php esc_html_e( 'These settings define how to synchronize passwords with Cloudflare.', 'p2cf' ); ?></p>
+            <p><?php esc_html_e( 'These settings define how to synchronize passwords with Cloudflare.', 'pass2cf' ); ?></p>
         <?php
     }
     
     function enabled_render() {
         ?>
-        <input type="checkbox" id="p2cf-enabled" <?php checked( P2CFOptions::load()->enabled ); ?> class="code" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[enabled]' ); ?>">
+        <input type="checkbox" id="pass2cf-enabled" <?php checked( Pass2CFOptions::load()->enabled ); ?> class="code" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[enabled]' ); ?>">
         <?php
     }
     
     function env_var_prefix_render() {
         ?>
-        <input type="text" id="p2cf-env-var-prefix" class="code" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[env_var_prefix]' ); ?>" value="<?php echo esc_attr( P2CFOptions::load()->env_var_prefix ); ?>">
+        <input type="text" id="pass2cf-env-var-prefix" class="code" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[env_var_prefix]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->env_var_prefix ); ?>">
         <?php
     }
 
     function hash_algo_render() {
         ?>
-        <input type="text" id="p2cf-hash-algo" list="hash-algo" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[hash_algo]' ); ?>" value="<?php echo esc_attr( P2CFOptions::load()->hash_algo ); ?>">
+        <input type="text" id="pass2cf-hash-algo" list="hash-algo" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[hash_algo]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->hash_algo ); ?>">
         <datalist id="hash-algo">
-            <option value="<?php echo esc_attr( P2CFOptions::NO_HASH_ALGO ); ?>" />
+            <option value="<?php echo esc_attr( Pass2CFOptions::NO_HASH_ALGO ); ?>" />
             <?php foreach ( hash_algos() as $algo ): ?>
                 <option value="<?php echo esc_attr( $algo ); ?>" />
             <?php endforeach; ?>
@@ -482,9 +482,9 @@ class P2CFAdminPage {
 
     function path_encoding_method_render() {
         ?>
-        <select id="p2cf-path-encoding-method" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[path_encoding_method]' ); ?>">
-            <option <?php selected( P2CFOptions::load()->path_encoding_method == P2CFOptions::NO_PATH_ENCODING ); ?> value="<?php echo esc_html( P2CFOptions::NO_PATH_ENCODING ); ?>"><?php echo esc_html( _ex( 'Plain', 'Represents the method name that does not encode the string', 'p2cf' ) ); ?></option>
-            <option <?php selected( P2CFOptions::load()->path_encoding_method == P2CFOptions::PATH_ENCODING_BASE64 ); ?> value="<?php echo esc_html( P2CFOptions::PATH_ENCODING_BASE64 ); ?>"><?php echo esc_html( _ex( 'Base64', 'Represents the method name that encode string in base64', 'p2cf' ) ); ?></option>
+        <select id="pass2cf-path-encoding-method" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[path_encoding_method]' ); ?>">
+            <option <?php selected( Pass2CFOptions::load()->path_encoding_method == Pass2CFOptions::NO_PATH_ENCODING ); ?> value="<?php echo esc_html( Pass2CFOptions::NO_PATH_ENCODING ); ?>"><?php echo esc_html( _ex( 'Plain', 'Represents the method name that does not encode the string', 'pass2cf' ) ); ?></option>
+            <option <?php selected( Pass2CFOptions::load()->path_encoding_method == Pass2CFOptions::PATH_ENCODING_BASE64 ); ?> value="<?php echo esc_html( Pass2CFOptions::PATH_ENCODING_BASE64 ); ?>"><?php echo esc_html( _ex( 'Base64', 'Represents the method name that encode string in base64', 'pass2cf' ) ); ?></option>
         </select>  
         <?php
     }
@@ -492,18 +492,18 @@ class P2CFAdminPage {
     function cloudflare_section_callback() {
         ?>
             <p>
-                <?php esc_html_e( 'These settings are used to interact with the right Cloudflare project.', 'p2cf' ); ?>
+                <?php esc_html_e( 'These settings are used to interact with the right Cloudflare project.', 'pass2cf' ); ?>
                 <a href="https://developers.cloudflare.com/fundamentals/api/get-started/create-token/" target="_blank">
-                    <?php esc_html_e( 'See how to create a Cloudflare API token.', 'p2cf' ); ?>
+                    <?php esc_html_e( 'See how to create a Cloudflare API token.', 'pass2cf' ); ?>
                 </a>
                 <?php printf(
                     /* translators: %1$s and %2$s are the names of the Cloudflare permissions */
-                    esc_html__( 'The token must have the %1$s and %2$s permissions:', 'p2cf' ),
-                    '<code title="' . esc_attr_x( 'Grants access to view Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'p2cf' ) . '">' . 
-                        esc_html_x( 'Cloudflare Pages Read', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'p2cf' ) .
+                    esc_html__( 'The token must have the %1$s and %2$s permissions:', 'pass2cf' ),
+                    '<code title="' . esc_attr_x( 'Grants access to view Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) . '">' . 
+                        esc_html_x( 'Cloudflare Pages Read', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) .
                     '</code>',
-                    '<code title="' . esc_attr_x( 'Grants access to create, edit and delete Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'p2cf' ) . '">' .
-                        esc_html_x( 'Cloudflare Pages Edit', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'p2cf' ) .
+                    '<code title="' . esc_attr_x( 'Grants access to create, edit and delete Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) . '">' .
+                        esc_html_x( 'Cloudflare Pages Edit', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) .
                     '</code>',
                 ); ?>
             </p>
@@ -512,19 +512,19 @@ class P2CFAdminPage {
 
     function cf_api_key_render() {
         ?>
-        <input required type="password" id="p2cf-cf-api-key" class="large-text" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[cf_api_key]' ); ?>" value="<?php echo esc_attr( P2CFOptions::load()->cf_api_key ); ?>">
+        <input required type="password" id="pass2cf-cf-api-key" class="large-text" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[cf_api_key]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->cf_api_key ); ?>">
         <?php
     }
 
     function account_id_render() {
         ?>
-        <input required maxlength="32" type="text" id="p2cf-cf-account-id" class="large-text" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[cf_account_id]' ); ?>" value="<?php echo esc_attr( P2CFOptions::load()->cf_account_id ); ?>">
+        <input required maxlength="32" type="text" id="pass2cf-cf-account-id" class="large-text" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[cf_account_id]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->cf_account_id ); ?>">
         <?php
     }
 
     function project_name_render() {
         ?>
-        <input required pattern="^[a-z0-9][a-z0-9-]*$" type="text" id="p2cf-cf-project-name" name="<?php echo esc_attr( P2CFOptions::OPTION_NAME . '[cf_project_name]' ); ?>" value="<?php echo esc_attr( P2CFOptions::load()->cf_project_name ); ?>">
+        <input required pattern="^[a-z0-9][a-z0-9-]*$" type="text" id="pass2cf-cf-project-name" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[cf_project_name]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->cf_project_name ); ?>">
         <?php
     }
 }

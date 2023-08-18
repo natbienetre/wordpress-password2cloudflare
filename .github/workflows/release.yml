@@ -29,17 +29,17 @@ jobs:
     - name: Version
       id: version
       run: |-
-        echo P2CF_VERSION="$(composer run-script version)" >> "$GITHUB_OUTPUT"
+        echo PASS2CF_VERSION="$(composer run-script version)" >> "$GITHUB_OUTPUT"
         git log $(git describe --tags --abbrev=0)..HEAD --oneline > changes.txt
 
     - uses: ncipollo/release-action@v1
       with:
         artifactContentType: "application/zip"
         artifactErrorsFailBuild: true
-        artifacts: "p2cf.zip"
+        artifacts: "pass2cf.zip"
         bodyFile: changes.txt
         draft: true
         omitDraftDuringUpdate: true
         removeArtifacts: true
-        tag: "v${{ steps.version.outputs.P2CF_VERSION }}"
+        tag: "v${{ steps.version.outputs.PASS2CF_VERSION }}"
         updateOnlyUnreleased: true
