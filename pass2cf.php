@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Password 2 Cloudflare
  * Plugin URI:        https://github.com/natbienetre/wordpress-password2cloudflare
- * Version:           0.2.0
+ * Version:           0.2.1
  * GitHub Plugin URI: natbienetre/wordpress-password2cloudflare
  * Funding URI:       https://github.com/sponsors/holyhope
  * Description:       Synchronize WordPress password-protected posts with secret environment variables in Cloudflare Pages.
@@ -14,7 +14,7 @@
 
 require 'autoload.php';
 
-define( 'pass2cf_PLUGIN_FILE', __FILE__ );
+define( 'PASS2CF_PLUGIN_FILE', __FILE__ );
 
 global $pass2cf_client;
 global $pass2cf_opts;
@@ -41,7 +41,7 @@ function pass2cf_init_pass2cf_client() {
 
 add_action( 'init', 'pass2cf_load_textdomain' );
 function pass2cf_load_textdomain() {
-    load_plugin_textdomain( 'pass2cf', false, dirname( plugin_basename( pass2cf_PLUGIN_FILE ) ) . '/languages' );
+    load_plugin_textdomain( 'pass2cf', false, dirname( plugin_basename( PASS2CF_PLUGIN_FILE ) ) . '/languages' );
 }
 
 add_action( 'post_updated', 'pass2cf_update_password', 10, 3 );

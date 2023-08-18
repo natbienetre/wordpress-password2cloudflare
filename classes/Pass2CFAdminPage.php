@@ -45,7 +45,7 @@ class Pass2CFAdminPage {
 
         add_action( 'admin_enqueue_scripts', array( $instance, 'enqueue_admin_script' ) );
 
-        add_filter( 'plugin_action_links_' . plugin_basename( Pass2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ) );
+        add_filter( 'plugin_action_links_' . plugin_basename( PASS2CF_PLUGIN_FILE ), array( $instance, 'plugin_settings' ) );
     }
 
     function plugin_settings( array $links ): array {
@@ -65,15 +65,15 @@ class Pass2CFAdminPage {
             return;
         }
 
-        wp_enqueue_script( 'pass2cf-admin-settings', plugin_dir_url( Pass2CF_PLUGIN_FILE ) . '/js/admin-settings.js', array(
+        wp_enqueue_script( 'pass2cf-admin-settings', plugin_dir_url( PASS2CF_PLUGIN_FILE ) . '/js/admin-settings.js', array(
             'jquery',
             'jquery-ui-tooltip',
             'wp-i18n',
         ), '1.0' );
 
-        wp_enqueue_style( 'pass2cf-admin-settings', plugin_dir_url( Pass2CF_PLUGIN_FILE ) . '/css/admin-settings.css' );
+        wp_enqueue_style( 'pass2cf-admin-settings', plugin_dir_url( PASS2CF_PLUGIN_FILE ) . '/css/admin-settings.css' );
 
-        wp_set_script_translations( 'pass2cf-admin-settings', 'pass2cf', plugin_dir_path( Pass2CF_PLUGIN_FILE ) . 'languages/' );
+        wp_set_script_translations( 'pass2cf-admin-settings', 'pass2cf', plugin_dir_path( PASS2CF_PLUGIN_FILE ) . 'languages/' );
     }
 
     function load_page() {

@@ -8,7 +8,7 @@ class CFPluginException extends CFException {
     }
 
     protected function bug_report_url() {
-        $plugin = get_plugin_data( Pass2CF_PLUGIN_FILE );
+        $plugin = get_plugin_data( PASS2CF_PLUGIN_FILE );
         $site_url = site_url();
         $plugin_name = $plugin['Name'] ?: 'unknown';
         $version = $plugin['Version'] ?: 'unknown';
