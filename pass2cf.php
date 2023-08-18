@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Password 2 Cloudflare
  * Plugin URI:        https://github.com/natbienetre/wordpress-password2cloudflare
- * Version:           0.1.1
+ * Version:           0.2.0
  * GitHub Plugin URI: natbienetre/wordpress-password2cloudflare
  * Funding URI:       https://github.com/sponsors/holyhope
  * Description:       Synchronize WordPress password-protected posts with secret environment variables in Cloudflare Pages.
