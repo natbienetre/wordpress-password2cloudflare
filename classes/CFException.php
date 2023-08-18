@@ -21,7 +21,7 @@ class CFException extends Exception {
                 return new CFConfigurationException( $message, $code, 'cf_project_name' );
             default:
                 /* translators: %1$d is the error code, %2$s is the message of the root error */
-                return new CFException( sprintf( __( 'Unknown error (code %1$d): %2$s', 'p2cf' ), $code, $message ), $code );
+                return new CFException( sprintf( __( 'Unknown error (code %1$d): %2$s', 'pass2cf' ), $code, $message ), $code );
         }
     }
 
@@ -54,7 +54,7 @@ class CFConfigurationException extends CFException {
 
     public function __construct( string $message, int $code, string ...$settings ) {        
         /* translators: %s is the message of the root error */
-        parent::__construct( sprintf( __( 'Configuration error: %s', 'p2cf' ), $message ), $code );
+        parent::__construct( sprintf( __( 'Configuration error: %s', 'pass2cf' ), $message ), $code );
 
         $this->setting_field = $settings;
     }
@@ -64,7 +64,7 @@ class CFConfigurationException extends CFException {
             return $this->getMessage();
         }
 
-        return sprintf( _x( '%s: %s', 'error message: root cause', 'p2cf2' ), $context, $this->getMessage() );
+        return sprintf( _x( '%s: %s', 'error message: root cause', 'pass2cf2' ), $context, $this->getMessage() );
     }
 
     public function handle( ?string $context = null ) {
@@ -72,19 +72,19 @@ class CFConfigurationException extends CFException {
 
         if ( $screen->in_admin() ) {
             if ( $screen->id == 'options' ) {
-                add_settings_error( P2CFOptions::OPTION_NAME, $this->setting_field[0], $this->build_message( $context ) );
+                add_settings_error( Pass2CFOptions::OPTION_NAME, $this->setting_field[0], $this->build_message( $context ) );
                 return;
             }
             switch ( $screen->parent_base ) {
                 case 'options-general':
-                    if ( $screen->id == P2CFAdminPage::PAGE_ID ) {
-                        add_settings_error( P2CFOptions::OPTION_NAME, $this->setting_field[0], $this->build_message( $context ) );
+                    if ( $screen->id == Pass2CFAdminPage::PAGE_ID ) {
+                        add_settings_error( Pass2CFOptions::OPTION_NAME, $this->setting_field[0], $this->build_message( $context ) );
                         return;
                     }
 
                     throw $this;
                 case 'admin-actions':
-                    header( 'Location:' . $_SERVER["HTTP_REFERER"] . '&' . urlencode( P2CFAdminPage::STATUS_PARAM_NAME ) . '=' . urlencode( self::CHECK_FAILED_STATUS ) . '&' . urlencode( P2CFAdminPage::MESSAGE_PARAM_NAME ) . '=' . urlencode( $this->build_message( $context ) ) );
+                    header( 'Location:' . $_SERVER["HTTP_REFERER"] . '&' . urlencode( Pass2CFAdminPage::STATUS_PARAM_NAME ) . '=' . urlencode( self::CHECK_FAILED_STATUS ) . '&' . urlencode( Pass2CFAdminPage::MESSAGE_PARAM_NAME ) . '=' . urlencode( $this->build_message( $context ) ) );
 
                     throw $this;
                 case null:
@@ -110,11 +110,11 @@ class AdminNoticeForConfiguration {
     }
 
     public function display_admin_notice() {
-        $setting_url = admin_url( 'options-general.php?page=' . P2CFAdminPage::PAGE_ID );
+        $setting_url = admin_url( 'options-general.php?page=' . Pass2CFAdminPage::PAGE_ID );
         ?>
             <div class="notice notice-error">
                 <p><?php echo esc_html( $this->message ); ?></p>
-                <p><a href="<?php echo esc_attr( $setting_url ); ?>"><?php esc_html_e( 'Go to settings', 'p2cf' ); ?></a></p>
+                <p><a href="<?php echo esc_attr( $setting_url ); ?>"><?php esc_html_e( 'Go to settings', 'pass2cf' ); ?></a></p>
             </div>
         <?php
     }

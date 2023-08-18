@@ -4,16 +4,16 @@ class CFPluginException extends CFException {
 
     public function __construct( string $message, int $code ) {
         /* translators: %1$d is the error code, %2$s is the root error */
-        parent::__construct( sprintf( __( 'Internal error (code %1$d): %2$s', 'p2cf' ), $code, $message ), $code );
+        parent::__construct( sprintf( __( 'Internal error (code %1$d): %2$s', 'pass2cf' ), $code, $message ), $code );
     }
 
     protected function bug_report_url() {
-        $plugin = get_plugin_data( P2CF_PLUGIN_FILE );
+        $plugin = get_plugin_data( Pass2CF_PLUGIN_FILE );
         $site_url = site_url();
         $plugin_name = $plugin['Name'] ?: 'unknown';
         $version = $plugin['Version'] ?: 'unknown';
 
-        $trace = P2CFOptions::load()->sanitize( $this->getTraceAsString() );
+        $trace = Pass2CFOptions::load()->sanitize( $this->getTraceAsString() );
         try {
             $project = CFProject::load();
 
@@ -65,7 +65,7 @@ class CFPluginException extends CFException {
         ?>
             <div class="notice notice-error">
                 <p><?php echo esc_html( $this->getMessage() ); ?></p>
-                <p><a target="_blank" href="<?php echo esc_attr( $report_url ); ?>"><?php _e( 'Please report the bug', 'p2cf' ); ?></a></p>
+                <p><a target="_blank" href="<?php echo esc_attr( $report_url ); ?>"><?php _e( 'Please report the bug', 'pass2cf' ); ?></a></p>
             </div>
         <?php
     }
