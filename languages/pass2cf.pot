@@ -1,39 +1,43 @@
-# Copyright (C) 2023 @holyhope
+# Copyright (C) 2025 @holyhope
 # This file is distributed under the same license as the Password 2 Cloudflare plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Password 2 Cloudflare 0.1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-secret-2-cloudflare\n"
+"Project-Id-Version: Password 2 Cloudflare 0.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/pass2cf\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-13T17:06:54+00:00\n"
+"POT-Creation-Date: 2025-01-06T16:22:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: pass2cf\n"
 
 #. Plugin Name of the plugin
-#: classes/P2CFAdminPage.php:126
-#: classes/P2CFAdminPage.php:127
-#: classes/P2CFAdminPage.php:244
+#: pass2cf.php
+#: classes/Pass2CFAdminPage.php:126
+#: classes/Pass2CFAdminPage.php:127
 msgid "Password 2 Cloudflare"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: pass2cf.php
 msgid "https://github.com/natbienetre/wordpress-password2cloudflare"
 msgstr ""
 
 #. Description of the plugin
+#: pass2cf.php
 msgid "Synchronize WordPress password-protected posts with secret environment variables in Cloudflare Pages."
 msgstr ""
 
 #. Author of the plugin
+#: pass2cf.php
 msgid "@holyhope"
 msgstr ""
 
 #. Author URI of the plugin
+#: pass2cf.php
 msgid "https://github.com/holyhope"
 msgstr ""
 
@@ -43,11 +47,11 @@ msgid "Unknown error (code %1$d): %2$s"
 msgstr ""
 
 #. translators: %s is the message of the root error
-#: classes/CFException.php:57
+#: classes/CFException.php:58
 msgid "Configuration error: %s"
 msgstr ""
 
-#: classes/CFException.php:117
+#: classes/CFException.php:118
 msgid "Go to settings"
 msgstr ""
 
@@ -65,236 +69,231 @@ msgstr ""
 msgid "Property %s does not exist"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:52
+#: classes/Pass2CFAdminPage.php:52
 msgid "Settings"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:83
+#: classes/Pass2CFAdminPage.php:83
 msgid "Security check failed. Please retry."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:86
+#: classes/Pass2CFAdminPage.php:86
 msgid "You are not authorized to perform this action."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:91
+#: classes/Pass2CFAdminPage.php:91
 msgid "No environment variable to delete."
 msgstr ""
 
 #. translators: %d is the number of environment variables that were deleted
-#: classes/P2CFAdminPage.php:95
+#: classes/Pass2CFAdminPage.php:95
 msgid "%d environment variable deleted."
 msgid_plural "%d environment variables deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/P2CFAdminPage.php:98
+#: classes/Pass2CFAdminPage.php:98
 msgid "Environment variables synchronized."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:101
+#: classes/Pass2CFAdminPage.php:101
 msgid "Environment variables synchronization failed."
 msgstr ""
 
 #. translators: %s is the prefix of the environment variable  that was invalid
-#: classes/P2CFAdminPage.php:106
+#: classes/Pass2CFAdminPage.php:106
 msgid "Invalid prefix %s."
 msgstr ""
 
 #. translators: %s is the message of the root error
-#: classes/P2CFAdminPage.php:111
+#: classes/Pass2CFAdminPage.php:111
 msgid "Error while checking settings: %s"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:114
+#: classes/Pass2CFAdminPage.php:114
 #: js/admin-settings.js:29
 msgid "Settings are valid."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:119
+#: classes/Pass2CFAdminPage.php:119
 msgid "Unknown status."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:171
+#: classes/Pass2CFAdminPage.php:171
 msgid "Error while deleting environment variables"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:201
+#: classes/Pass2CFAdminPage.php:201
 msgid "Error while synchronizing environment variables"
 msgstr ""
 
 #. translators: %s is the name of the Cloudflare project
-#: classes/P2CFAdminPage.php:269
+#: classes/Pass2CFAdminPage.php:269
 msgid "Synchronize with Cloudflare project %s"
 msgstr ""
 
 #. translators: %s is the name of the Cloudflare project
-#: classes/P2CFAdminPage.php:278
+#: classes/Pass2CFAdminPage.php:278
 msgid "Delete environment variables from Cloudflare project %s"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:291
+#: classes/Pass2CFAdminPage.php:291
 msgid "Invalid hash algorithm"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:298
+#: classes/Pass2CFAdminPage.php:298
 msgid "Invalid path encoding method"
 msgstr ""
 
 #. translators: %s is the name of the Cloudflare project
-#: classes/P2CFAdminPage.php:312
+#: classes/Pass2CFAdminPage.php:312
 msgid "Successfully connected to Cloudflare project %s"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:323
+#: classes/Pass2CFAdminPage.php:323
 msgctxt "Header for the setting section"
 msgid "Synchronization"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:332
+#: classes/Pass2CFAdminPage.php:332
 msgctxt "Header for the setting section"
 msgid "Dangerous zone"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:339
-#: classes/P2CFAdminPage.php:374
+#: classes/Pass2CFAdminPage.php:339
+#: classes/Pass2CFAdminPage.php:374
 msgctxt "Label for the setting field"
 msgid "Environment Variable Prefix"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:359
+#: classes/Pass2CFAdminPage.php:359
 msgctxt "Header for the setting section"
 msgid "General"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:366
+#: classes/Pass2CFAdminPage.php:366
 msgctxt "Label for the setting field"
 msgid "Check to enable the plugin"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:382
+#: classes/Pass2CFAdminPage.php:382
 msgctxt "Label for the setting field"
 msgid "Path encoding method"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:390
+#: classes/Pass2CFAdminPage.php:390
 msgctxt "Label for the setting field"
 msgid "Hash algorithm"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:398
+#: classes/Pass2CFAdminPage.php:398
 msgctxt "Header for the setting section"
 msgid "Cloudflare"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:405
+#: classes/Pass2CFAdminPage.php:405
 msgctxt "Label for the setting field"
 msgid "Cloudflare API Key"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:413
+#: classes/Pass2CFAdminPage.php:413
 msgctxt "Label for the setting field"
 msgid "Account ID"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:421
+#: classes/Pass2CFAdminPage.php:421
 msgctxt "Label for the setting field"
 msgid "Pages project name"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:430
+#: classes/Pass2CFAdminPage.php:430
 msgid "These buttons allow you to reconcile the passwords stored in the database with the environment variables stored in Cloudflare."
 msgstr ""
 
 #. translators: %s is the prefix for environment variable
-#: classes/P2CFAdminPage.php:434
+#: classes/Pass2CFAdminPage.php:434
 msgid "Warning, this will remove all environment variables starting with %s that does not match a protected page."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:443
+#: classes/Pass2CFAdminPage.php:443
 msgid "These buttons allow you to delete all environment variables from Cloudflare."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:449
+#: classes/Pass2CFAdminPage.php:449
 msgctxt "The default prefix for environment variable"
 msgid "OLD_PREFIX_"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:455
+#: classes/Pass2CFAdminPage.php:455
 msgid "These settings define how to synchronize passwords with Cloudflare."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:486
+#: classes/Pass2CFAdminPage.php:486
 msgctxt "Represents the method name that does not encode the string"
 msgid "Plain"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:487
+#: classes/Pass2CFAdminPage.php:487
 msgctxt "Represents the method name that encode string in base64"
 msgid "Base64"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:495
+#: classes/Pass2CFAdminPage.php:495
 msgid "These settings are used to interact with the right Cloudflare project."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:497
+#: classes/Pass2CFAdminPage.php:497
 msgid "See how to create a Cloudflare API token."
 msgstr ""
 
 #. translators: %1$s and %2$s are the names of the Cloudflare permissions
-#: classes/P2CFAdminPage.php:501
+#: classes/Pass2CFAdminPage.php:501
 msgid "The token must have the %1$s and %2$s permissions:"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:502
+#: classes/Pass2CFAdminPage.php:502
 msgctxt "Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/"
 msgid "Grants access to view Cloudflare Pages projects."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:503
+#: classes/Pass2CFAdminPage.php:503
 msgctxt "Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/"
 msgid "Cloudflare Pages Read"
 msgstr ""
 
-#: classes/P2CFAdminPage.php:505
+#: classes/Pass2CFAdminPage.php:505
 msgctxt "Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/"
 msgid "Grants access to create, edit and delete Cloudflare Pages projects."
 msgstr ""
 
-#: classes/P2CFAdminPage.php:506
+#: classes/Pass2CFAdminPage.php:506
 msgctxt "Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/"
 msgid "Cloudflare Pages Edit"
 msgstr ""
 
-#: classes/P2CFOptions.php:48
+#: classes/Pass2CFOptions.php:48
 msgctxt "Default prefix for environment variable"
 msgid "WP_PASSWORD_"
 msgstr ""
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:64
+#: pass2cf.php:68
 msgid "Error while deleting environment varariable %1$s from Cloudflare project %2$s."
 msgstr ""
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:74
+#: pass2cf.php:78
 msgid "Error while adding environment variable %1$s to Cloudflare project %2$s."
 msgstr ""
 
 #. translators: %1$s is the prefix for environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:94
+#: pass2cf.php:98
 msgid "Error while deleting all environment variables (starting with %1$s) from Cloudflare project %2$s"
 msgstr ""
 
 #. translators: %s is the project name
-#: pass2cf.php:110
+#: pass2cf.php:114
 msgid "Failed to synchronize environment variables with the project %s."
-msgstr ""
-
-#: pass2cf.php:184
-msgctxt "In plugin list, link to sponsor the developper"
-msgid "❤️ Show support"
 msgstr ""
 
 #: js/admin-settings.js:38

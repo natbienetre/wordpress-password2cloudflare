@@ -8,7 +8,7 @@ class Pass2CFAdminPage {
     const SYNC_VARS_SECTION       = 'sync_vars';
     const CLOUDFLARE_SECTION      = 'cloudflare';
     const DELETE_ENV_VARS_SECTION = 'delete_env_vars';
-    
+
     const SYNC_VARS_ACTION     = 'pass2cf-sync-env-vars';
     const DELETE_VARS_ACTION   = 'pass2cf-delete-env-vars';
     const CHECK_OPTIONS_ACTION = 'pass2cf-options-check';
@@ -120,7 +120,7 @@ class Pass2CFAdminPage {
                 break;
         }
     }
-    
+
     function add_admin_menu() {
         $this->load_hook_suffix = add_options_page(
             __( 'Password 2 Cloudflare', 'pass2cf' ),
@@ -168,11 +168,11 @@ class Pass2CFAdminPage {
             ) ) );
             exit;
         } catch ( CFException $e ) {
-            $e->raise( __( 'Error while deleting environment variables', 'pass2cf' ) );
+            $e->handle( __( 'Error while deleting environment variables', 'pass2cf' ) );
             return;
         }
     }
-    
+
     public function sync_env_vars(){
         $nonce = sanitize_text_field( @$_POST['_wpnonce'] );
 
@@ -198,7 +198,7 @@ class Pass2CFAdminPage {
             ) ) );
             exit;
         } catch ( CFException $e ) {
-            $e->raise( __( 'Error while synchronizing environment variables', 'pass2cf' ) );
+            $e->handle( __( 'Error while synchronizing environment variables', 'pass2cf' ) );
             return;
         }
     }
@@ -353,7 +353,7 @@ class Pass2CFAdminPage {
             'default'           => Pass2CFOptions::defaults(),
             'sanitize_callback' => array( $this, 'sanitize_setting' ),
         ) );
-        
+
         add_settings_section(
             self::GENERAL_SECTION,
             esc_html_x( 'General', 'Header for the setting section', 'pass2cf' ),
@@ -376,7 +376,7 @@ class Pass2CFAdminPage {
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
         );
-        
+
         add_settings_field(
             'path_encoding_method',
             $this->label_for( 'pass2cf-path-encoding-method', esc_html_x( 'Path encoding method', 'Label for the setting field', 'pass2cf' ) ),
@@ -384,7 +384,7 @@ class Pass2CFAdminPage {
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
         );
-        
+
         add_settings_field(
             'hash_algo',
             $this->label_for( 'pass2cf-hash-algo', esc_html_x( 'Hash algorithm', 'Label for the setting field', 'pass2cf' ) ),
@@ -392,14 +392,14 @@ class Pass2CFAdminPage {
             self::OPTIONS_PAGE_ID,
             self::GENERAL_SECTION,
         );
-        
+
         add_settings_section(
             self::CLOUDFLARE_SECTION,
             esc_html_x( 'Cloudflare', 'Header for the setting section', 'pass2cf' ),
             array( $this, 'cloudflare_section_callback' ),
             self::OPTIONS_PAGE_ID,
         );
-        
+
         add_settings_field(
             'cf_api_key',
             $this->label_for( 'pass2cf-cf-api-key', esc_html_x( 'Cloudflare API Key', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
@@ -407,7 +407,7 @@ class Pass2CFAdminPage {
             self::OPTIONS_PAGE_ID,
             self::CLOUDFLARE_SECTION,
         );
-        
+
         add_settings_field(
             'cf_account_id',
             $this->label_for( 'pass2cf-cf-account-id', esc_html_x( 'Account ID', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
@@ -415,7 +415,7 @@ class Pass2CFAdminPage {
             self::OPTIONS_PAGE_ID,
             self::CLOUDFLARE_SECTION,
         );
-        
+
         add_settings_field(
             'cf_project_name',
             $this->label_for( 'pass2cf-cf-project-name', esc_html_x( 'Pages project name', 'Label for the setting field', 'pass2cf' ) . wp_required_field_indicator() ),
@@ -437,31 +437,31 @@ class Pass2CFAdminPage {
             </div>
         <?php
     }
-    
+
     function delete_env_vars_section_callback() {
         ?>
             <p><?php esc_html_e( 'These buttons allow you to delete all environment variables from Cloudflare.', 'pass2cf' ); ?> </p>
         <?php
     }
-    
+
     function delete_env_var_prefix_render() {
         ?>
         <input type="text" id="pass2cf-delete-env-var-prefix" class="code" required minlength="1" name="<?php echo esc_attr( self::DELETE_VARS_PREFIX_INPUT ); ?>" placeholder="<?php echo esc_attr_x( 'OLD_PREFIX_', 'The default prefix for environment variable', 'pass2cf' ); ?>">
         <?php
     }
-    
+
     function synchronization_section_callback() {
         ?>
             <p><?php esc_html_e( 'These settings define how to synchronize passwords with Cloudflare.', 'pass2cf' ); ?></p>
         <?php
     }
-    
+
     function enabled_render() {
         ?>
         <input type="checkbox" id="pass2cf-enabled" <?php checked( Pass2CFOptions::load()->enabled ); ?> class="code" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[enabled]' ); ?>">
         <?php
     }
-    
+
     function env_var_prefix_render() {
         ?>
         <input type="text" id="pass2cf-env-var-prefix" class="code" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[env_var_prefix]' ); ?>" value="<?php echo esc_attr( Pass2CFOptions::load()->env_var_prefix ); ?>">
@@ -476,7 +476,7 @@ class Pass2CFAdminPage {
             <?php foreach ( hash_algos() as $algo ): ?>
                 <option value="<?php echo esc_attr( $algo ); ?>" />
             <?php endforeach; ?>
-        </datalist>  
+        </datalist>
         <?php
     }
 
@@ -485,7 +485,7 @@ class Pass2CFAdminPage {
         <select id="pass2cf-path-encoding-method" name="<?php echo esc_attr( Pass2CFOptions::OPTION_NAME . '[path_encoding_method]' ); ?>">
             <option <?php selected( Pass2CFOptions::load()->path_encoding_method == Pass2CFOptions::NO_PATH_ENCODING ); ?> value="<?php echo esc_html( Pass2CFOptions::NO_PATH_ENCODING ); ?>"><?php echo esc_html( _ex( 'Plain', 'Represents the method name that does not encode the string', 'pass2cf' ) ); ?></option>
             <option <?php selected( Pass2CFOptions::load()->path_encoding_method == Pass2CFOptions::PATH_ENCODING_BASE64 ); ?> value="<?php echo esc_html( Pass2CFOptions::PATH_ENCODING_BASE64 ); ?>"><?php echo esc_html( _ex( 'Base64', 'Represents the method name that encode string in base64', 'pass2cf' ) ); ?></option>
-        </select>  
+        </select>
         <?php
     }
 
@@ -499,7 +499,7 @@ class Pass2CFAdminPage {
                 <?php printf(
                     /* translators: %1$s and %2$s are the names of the Cloudflare permissions */
                     esc_html__( 'The token must have the %1$s and %2$s permissions:', 'pass2cf' ),
-                    '<code title="' . esc_attr_x( 'Grants access to view Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) . '">' . 
+                    '<code title="' . esc_attr_x( 'Grants access to view Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) . '">' .
                         esc_html_x( 'Cloudflare Pages Read', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) .
                     '</code>',
                     '<code title="' . esc_attr_x( 'Grants access to create, edit and delete Cloudflare Pages projects.', 'Reference: https://developers.cloudflare.com/fundamentals/api/reference/permissions/', 'pass2cf' ) . '">' .
