@@ -1,0 +1,72 @@
+name: WordPress Plugin
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ibiqlik/action-yamllint@v3
+        with:
+          config_data: |-
+            extends: default
+            rules:
+              document-start:
+                present: false
+              truthy:
+                check-keys: false
+            ignore:
+              - node_modules
+              - vendor
+
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: overtrue/phplint@9.1.2
+
+  composer-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: test ! -f composer.json || composer validate --strict
+
+  wordpress-phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests
+        id: test
+        uses: holyhope/test-wordpress-plugin-github-action@v2.0.2
+        with:
+          plugin_slug: pass2cf
+
+      - uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: ${{ steps.test.outputs.junit_report }}
+
+  language-files-up-to-date:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: holyhope/test-wordpress-languages-github-action@v4.0.1
+        id: languages
+        with:
+          slug: pass2cf
+          exclude: |-
+            .github
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: language-patch
+          path: ${{ steps.languages.outputs.patch_path }}

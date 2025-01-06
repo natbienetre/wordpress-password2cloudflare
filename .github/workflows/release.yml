@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: write
@@ -12,34 +12,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
-    - name: Build release
-      run: composer run-script build
+      - name: Build release
+        run: composer run-script build
 
-    - name: Version
-      id: version
-      run: |-
-        echo PASS2CF_VERSION="$(composer run-script version)" >> "$GITHUB_OUTPUT"
-        git log $(git describe --tags --abbrev=0)..HEAD --oneline > changes.txt
+      - name: Version
+        id: version
+        run: |-
+          echo PASS2CF_VERSION="$(composer run-script version)" \
+            >> "$GITHUB_OUTPUT"
+          git log $(git describe --tags --abbrev=0)..HEAD --oneline \
+            > changes.txt
 
-    - uses: ncipollo/release-action@v1
-      with:
-        artifactContentType: "application/zip"
-        artifactErrorsFailBuild: true
-        artifacts: "pass2cf.zip"
-        bodyFile: changes.txt
-        draft: true
-        omitDraftDuringUpdate: true
-        removeArtifacts: true
-        tag: "v${{ steps.version.outputs.PASS2CF_VERSION }}"
-        updateOnlyUnreleased: true
+      - uses: ncipollo/release-action@v1
+        with:
+          artifactContentType: "application/zip"
+          artifactErrorsFailBuild: true
+          artifacts: "pass2cf.zip"
+          bodyFile: changes.txt
+          draft: true
+          omitDraftDuringUpdate: true
+          removeArtifacts: true
+          tag: "v${{ steps.version.outputs.PASS2CF_VERSION }}"
+          updateOnlyUnreleased: true
