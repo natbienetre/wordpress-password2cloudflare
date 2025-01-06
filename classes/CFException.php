@@ -27,12 +27,13 @@ class CFException extends Exception {
 
     public function handle( ?string $context = null ) {
         if ( wp_doing_ajax() ) {
-            wp_send_json_error( $message, 500 );
+            wp_send_json_error( $context, 500 );
             return;
         }
 
         $screen = get_current_screen();
-        if ( $screen->in_admin() ) {
+
+        if ( is_null( $screen ) ||  $screen->in_admin() ) {
             add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
             return;
         }
@@ -52,7 +53,7 @@ class CFException extends Exception {
 class CFConfigurationException extends CFException {
     public array $setting_field;
 
-    public function __construct( string $message, int $code, string ...$settings ) {        
+    public function __construct( string $message, int $code, string ...$settings ) {
         /* translators: %s is the message of the root error */
         parent::__construct( sprintf( __( 'Configuration error: %s', 'pass2cf' ), $message ), $code );
 
@@ -70,7 +71,7 @@ class CFConfigurationException extends CFException {
     public function handle( ?string $context = null ) {
         $screen = get_current_screen();
 
-        if ( $screen->in_admin() ) {
+        if ( ! is_null( $screen ) && $screen->in_admin() ) {
             if ( $screen->id == 'options' ) {
                 add_settings_error( Pass2CFOptions::OPTION_NAME, $this->setting_field[0], $this->build_message( $context ) );
                 return;
