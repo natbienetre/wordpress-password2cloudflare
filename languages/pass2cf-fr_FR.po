@@ -14,25 +14,29 @@ msgstr ""
 "X-Domain: pass2cf\n"
 
 #. Plugin Name of the plugin
+#: pass2cf.php
 #: classes/Pass2CFAdminPage.php:126
 #: classes/Pass2CFAdminPage.php:127
-#: classes/Pass2CFAdminPage.php:244
 msgid "Password 2 Cloudflare"
 msgstr "Password 2 Cloudflare"
 
 #. Plugin URI of the plugin
+#: pass2cf.php
 msgid "https://github.com/natbienetre/wordpress-password2cloudflare"
 msgstr "https://github.com/natbienetre/wordpress-password2cloudflare"
 
 #. Description of the plugin
+#: pass2cf.php
 msgid "Synchronize WordPress password-protected posts with secret environment variables in Cloudflare Pages."
 msgstr "Synchroniser les articles protégés par mot de passe de WordPress avec des variables d'environnement dans Cloudflare Pages."
 
 #. Author of the plugin
+#: pass2cf.php
 msgid "@holyhope"
 msgstr "@holyhope"
 
 #. Author URI of the plugin
+#: pass2cf.php
 msgid "https://github.com/holyhope"
 msgstr "https://github.com/holyhope"
 
@@ -41,12 +45,12 @@ msgstr "https://github.com/holyhope"
 msgid "Unknown error (code %1$d): %2$s"
 msgstr "Code d'erreur inconnu (code %1$d): %2$s"
 
-#: classes/CFException.php:117
+#: classes/CFException.php:118
 msgid "Go to settings"
 msgstr "Aller aux paramètres"
 
 #. translators: %s is the message of the root error
-#: classes/CFException.php:57
+#: classes/CFException.php:58
 msgid "Configuration error: %s"
 msgstr "Erreur de configuration: %s"
 
@@ -215,17 +219,17 @@ msgid "See how to create a Cloudflare API token."
 msgstr "Voir comment créer un jeton d'API Cloudflare."
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:74
+#: pass2cf.php:78
 msgid "Error while adding environment variable %1$s to Cloudflare project %2$s."
 msgstr "Erreur lors de l'ajout de la variable d'environnement %1$s au projet Cloudflare %2$s."
 
 #. translators: %1$s is the prefix for environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:94
+#: pass2cf.php:98
 msgid "Error while deleting all environment variables (starting with %1$s) from Cloudflare project %2$s"
 msgstr "Erreur lors de la suppression de toutes les variables d'environnement (commençant par %1$s) du projet Cloudflare %2$s"
 
 #. translators: %s is the project name
-#: pass2cf.php:110
+#: pass2cf.php:114
 msgid "Failed to synchronize environment variables with the project %s."
 msgstr "Échec de la synchronisation des variables d'environnement avec le projet %s."
 
@@ -278,7 +282,7 @@ msgid "Security check failed. Please retry."
 msgstr "La vérification de sécurité à échouée. Veuillez réessayer."
 
 #. translators: %1$s is the name of the environment variable, %2$s is the name of the Cloudflare project
-#: pass2cf.php:64
+#: pass2cf.php:68
 msgid "Error while deleting environment varariable %1$s from Cloudflare project %2$s."
 msgstr "Erreur lors de la suppression de la variable d'environnement %1$s du projet Cloudflare %2$s."
 
@@ -290,11 +294,6 @@ msgstr "Vérifier les paramètres"
 #: classes/Pass2CFAdminPage.php:52
 msgid "Settings"
 msgstr "Options"
-
-#: pass2cf.php:184
-msgctxt "In plugin list, link to sponsor the developper"
-msgid "❤️ Show support"
-msgstr "❤️ Soutenir"
 
 #: classes/Pass2CFOptions.php:48
 msgctxt "Default prefix for environment variable"
