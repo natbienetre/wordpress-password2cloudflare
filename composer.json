@@ -32,13 +32,13 @@
         ]
     },
     "require": {
-        "guzzlehttp/guzzle": "^7.7",
-        "composer/installers": "^2.2"
+        "guzzlehttp/guzzle": "^8.2",
+        "composer/installers": "^2.3"
     },
     "require-dev": {
-        "wp-cli/wp-cli-bundle": "*",
-        "phpunit/phpunit": "^9",
-        "yoast/phpunit-polyfills": "^2"
+        "wp-cli/wp-cli-bundle": "^2.12",
+        "phpunit/phpunit": "^11",
+        "yoast/phpunit-polyfills": "^4"
     },
     "config": {
         "allow-plugins": {
