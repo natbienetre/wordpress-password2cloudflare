@@ -52,8 +52,9 @@ jobs:
 
       - name: Run tests
         id: test
-        uses: holyhope/test-wordpress-plugin-github-action@v2.0.2
+        uses: holyhope/test-wordpress-plugin-github-action@v2.0.4
         with:
+          phpunit_version: ""
           plugin_slug: pass2cf
 
       - uses: mikepenz/action-junit-report@v3
@@ -65,14 +66,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: holyhope/test-wordpress-languages-github-action@v4.0.1
-        id: languages
-        with:
-          slug: pass2cf
-          exclude: |-
-            .github
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: language-patch
-          path: ${{ steps.languages.outputs.patch_path }}
+      - uses: holyhope/install-wp-cli-github-action@v1.0.0
+        id: wp-cli
+      - name: Check language files
+        shell: bash
+        run: |-
+          generated_pot="$(mktemp --tmpdir="$RUNNER_TEMP" pass2cf.XXXXXX.pot)"
+          committed_pot="$(mktemp --tmpdir="$RUNNER_TEMP" committed.XXXXXX.pot)"
+          normalized_pot="$(
+            mktemp --tmpdir="$RUNNER_TEMP" normalized.XXXXXX.pot
+          )"
+          unique_messages="$(mktemp --tmpdir="$RUNNER_TEMP" unique.XXXXXX.po)"
+
+          '${{ steps.wp-cli.outputs.path }}' i18n make-pot \
+            . \
+            "$generated_pot" \
+            --slug=pass2cf \
+            --exclude=.github,vendor
+
+          sed -E \
+            -e '/^# Copyright/d' \
+            -e '/^#:/d' \
+            -e '/^"POT-Creation-Date:/d' \
+            -e '/^"X-Generator:/d' \
+            languages/pass2cf.pot \
+            > "$committed_pot"
+          sed -E \
+            -e '/^# Copyright/d' \
+            -e '/^#:/d' \
+            -e '/^"POT-Creation-Date:/d' \
+            -e '/^"X-Generator:/d' \
+            "$generated_pot" \
+            > "$normalized_pot"
+
+          diff --unified "$committed_pot" "$normalized_pot"
+
+          msgcomm \
+            --unique \
+            --omit-header \
+            --no-location \
+            languages/pass2cf-fr_FR.po \
+            "$generated_pot" \
+            > "$unique_messages"
+
+          if test -s "$unique_messages"; then
+            cat "$unique_messages"
+            exit 1
+          fi
