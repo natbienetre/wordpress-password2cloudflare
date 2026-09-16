@@ -10,7 +10,7 @@
         ],
         "i18n-build": [
             "wp i18n make-mo languages",
-            "wp i18n make-json languages --no-purge --update-mo-files --pretty-print"
+            "wp i18n make-json languages --pretty-print"
         ],
         "version": [
             "grep ' * Version:' pass2cf.php | sed -e 's/.*: *//'"

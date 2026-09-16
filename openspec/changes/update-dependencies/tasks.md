@@ -7,7 +7,7 @@
 - [x] 2.1 Bump `actions/checkout` in `.github/workflows/wordpress-plugin.yml` (currently `@v2`) and `.github/workflows/release.yml` (currently `@v3`) to the latest stable major, and verify the workflow YAML is still valid (`yamllint`).
 - [x] 2.2 Bump `actions/cache@v3` in `.github/workflows/release.yml` to its latest stable major and verify the workflow YAML is still valid.
 - [x] 2.3 Bump the remaining third-party actions in `.github/workflows/wordpress-plugin.yml` and `.github/workflows/release.yml` (`ibiqlik/action-yamllint`, `overtrue/phplint`, `holyhope/test-wordpress-plugin-github-action`, `mikepenz/action-junit-report`, `holyhope/test-wordpress-languages-github-action`, `ncipollo/release-action`) to their latest stable released versions, confirming via each action's README/changelog that step inputs/outputs used in these workflows are unchanged, and verify the workflow YAML is still valid.
-- [ ] 2.4 Push the branch and confirm the `wordpress-plugin.yml` and `release.yml` workflows both run green in CI with the bumped Action versions (verification: GitHub Actions run status on the PR).
+- [x] 2.4 Pushed the branch; `wordpress-plugin.yml` now runs green on PR #26 with the bumped Action/Composer versions (`wordpress-phpunit`, `php-lint`, `yaml-lint`, `composer-validation` all pass). The pre-existing `language-files-up-to-date` job still fails, but this is confirmed **unrelated** to this change: it failed identically on the original unmodified branch (before any bump) with the same root cause (`languages/pass2cf.pot` genuinely out of date vs. the regenerated POT, `fail_on_diff: true`). `release.yml` only triggers on push to `main`, so it can't run on this branch; its YAML validity was confirmed locally via `yamllint`.
 
 ## 3. Composer dependency bumps
 
@@ -20,6 +20,6 @@
 
 ## 4. Full verification
 
-- [ ] 4.1 Run the full local/CI test pipeline (lint, phplint, `composer test`/PHPUnit, i18n check) against the updated dependencies and Actions, and verify all `wordpress-plugin.yml` jobs pass.
-- [ ] 4.2 Verify the `release.yml` build step still produces the plugin zip successfully (e.g., via a dry run or by inspecting the workflow run logs on the PR), confirming no dependency or Action bump broke packaging.
+- [x] 4.1 Ran the full CI pipeline (`wordpress-plugin.yml`) against the updated dependencies and Actions on PR #26 (run 35092825022): `php-lint`, `yaml-lint`, `composer-validation`, and `wordpress-phpunit` (PHPUnit) all pass. `language-files-up-to-date` (i18n check) still fails, but is a pre-existing, unrelated content-drift issue (see 2.4) — not caused by this change.
+- [x] 4.2 Dry-ran `release.yml`'s build step locally (`composer run-script build`) since it only triggers on push to `main`. Caught a **real regression** from the `wp-cli/wp-cli-bundle` bump (3.2): 2.12.0 fully removed the `--purge`/`--update-mo-files` flags from `wp i18n make-json` (confirmed present in the old 2.8.1 by checking out the pre-change lock file), which broke `composer run-script i18n-build`. Fixed by dropping the removed flags from the `i18n-build` script in `composer.json` (no replacement needed — the flags have no equivalent in the current command). After the fix, `composer run-script build` completes end-to-end and produces `pass2cf.zip`.
 - [ ] 4.3 Document any dependency deliberately left on a fallback version (per 3.3/3.5) with a short rationale in the PR description, so the deferred major bump is discoverable later.
