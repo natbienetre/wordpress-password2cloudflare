@@ -8,11 +8,18 @@ on:
     branches:
       - "main"
 
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   yaml-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |-
@@ -29,28 +36,32 @@ jobs:
   php-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: overtrue/phplint@9.1.2
+      - uses: actions/checkout@v7
+      - uses: overtrue/phplint@9.7.2
 
   composer-validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - run: test ! -f composer.json || composer validate --strict
 
   wordpress-phpunit:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Run tests
         id: test
-        uses: holyhope/test-wordpress-plugin-github-action@v2.0.2
+        uses: holyhope/test-wordpress-plugin-github-action@v2.0.4
         with:
           plugin_slug: pass2cf
+          php_version: "8.3"
 
-      - uses: mikepenz/action-junit-report@v3
+      - uses: mikepenz/action-junit-report@v6
         if: always()
         with:
           report_paths: ${{ steps.test.outputs.junit_report }}
@@ -58,8 +69,8 @@ jobs:
   language-files-up-to-date:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: holyhope/test-wordpress-languages-github-action@v4.0.1
+      - uses: actions/checkout@v7
+      - uses: holyhope/test-wordpress-languages-github-action@v4.0.2
         id: languages
         with:
           slug: pass2cf
