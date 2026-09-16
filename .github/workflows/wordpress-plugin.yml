@@ -49,6 +49,7 @@ jobs:
         uses: holyhope/test-wordpress-plugin-github-action@v2.0.4
         with:
           plugin_slug: pass2cf
+          php_version: "8.3"
 
       - uses: mikepenz/action-junit-report@v6
         if: always()
