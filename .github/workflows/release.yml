@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: ["main"]
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -12,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
