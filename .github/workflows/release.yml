@@ -36,16 +36,13 @@ jobs:
           git log $(git describe --tags --abbrev=0)..HEAD --oneline \
             > changes.txt
 
-      - name: Release
-        uses: >-  # v1.18.0
-          ncipollo/release-action@bcfe5470707e8832e12347755757cec0eb3c22af
-        with:
-          artifactContentType: "application/zip"
-          artifactErrorsFailBuild: true
-          artifacts: "pass2cf.zip"
-          bodyFile: changes.txt
-          draft: true
-          omitDraftDuringUpdate: true
-          removeArtifacts: true
-          tag: "v${{ steps.version.outputs.PASS2CF_VERSION }}"
-          updateOnlyUnreleased: true
+      - name: Create release
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          TAG: "v${{ steps.version.outputs.PASS2CF_VERSION }}"
+        run: |-
+          gh release create "$TAG" pass2cf.zip \
+            --draft \
+            --notes-file changes.txt \
+            --title "$TAG"
