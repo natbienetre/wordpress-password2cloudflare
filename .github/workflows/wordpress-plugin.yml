@@ -36,6 +36,7 @@ jobs:
               - vendor
 
   php-lint:
+    name: PHP lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
