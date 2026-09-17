@@ -19,8 +19,10 @@ jobs:
   yaml-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: ibiqlik/action-yamllint@v3
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Lint YAML files
+        uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |-
             extends: default
@@ -40,6 +42,7 @@ jobs:
       - uses: overtrue/phplint@9.7.2
 
   composer-validation:
+    name: Composer validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -76,7 +79,7 @@ jobs:
           slug: pass2cf
           exclude: |-
             .github
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: language-patch
