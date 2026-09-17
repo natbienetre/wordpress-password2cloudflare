@@ -42,6 +42,7 @@ jobs:
       - uses: overtrue/phplint@9.7.2
 
   composer-validation:
+    name: Composer validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
