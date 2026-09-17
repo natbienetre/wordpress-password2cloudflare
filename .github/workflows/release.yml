@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   build:
+    name: Build release
     runs-on: ubuntu-latest
 
     steps:
