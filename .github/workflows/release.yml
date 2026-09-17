@@ -35,7 +35,9 @@ jobs:
           git log $(git describe --tags --abbrev=0)..HEAD --oneline \
             > changes.txt
 
-      - uses: ncipollo/release-action@bcfe5470707e8832e12347755757cec0eb3c22af # v1.18.0
+      - name: Release
+        uses: >-  # v1.18.0
+          ncipollo/release-action@bcfe5470707e8832e12347755757cec0eb3c22af
         with:
           artifactContentType: "application/zip"
           artifactErrorsFailBuild: true
