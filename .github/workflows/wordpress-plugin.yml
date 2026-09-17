@@ -22,7 +22,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Lint YAML files
-        uses: ibiqlik/action-yamllint@v3
+        uses: >-  # v3.1.1
+          ibiqlik/action-yamllint@b74a2626a991d676b6ec243a6458ff86cccf2d2d
         with:
           config_data: |-
             extends: default
