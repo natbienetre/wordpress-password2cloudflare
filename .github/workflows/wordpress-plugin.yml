@@ -43,8 +43,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Lint PHP
-        uses: >-  # v9.7.2
-          overtrue/phplint@f9d3fb3c6b6af49fce0fa8d712da1c38da41fe65
+        uses: >-  # v9.8.0
+          overtrue/phplint@722f95a6c8924b9e0cfcbdd1e49bb8c31c858a77
 
   composer-validation:
     name: Composer validation
